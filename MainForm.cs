@@ -23,7 +23,7 @@ namespace Encrypter
                 var init = controller.EncryptFolder(path);
                 ShowKey(init);
             }
-            catch
+            catch 
             {
                 MessageBox.Show("Что-то пошло не так :(", "Ошибка");
             }

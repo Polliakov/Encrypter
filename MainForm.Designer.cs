@@ -29,7 +29,6 @@ namespace Encrypter
         /// </summary>
         private void InitializeComponent()
         {
-            this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
             this.btEncryptFile = new System.Windows.Forms.Button();
             this.btDecryptFile = new System.Windows.Forms.Button();
             this.btEncryptFolder = new System.Windows.Forms.Button();
@@ -41,10 +40,6 @@ namespace Encrypter
             this.tableLayoutPanel1.SuspendLayout();
             this.tableLayoutPanel2.SuspendLayout();
             this.SuspendLayout();
-            // 
-            // openFileDialog1
-            // 
-            this.openFileDialog1.FileName = "openFileDialog1";
             // 
             // btEncryptFile
             // 
@@ -187,8 +182,6 @@ namespace Encrypter
         }
 
         #endregion
-
-        private System.Windows.Forms.OpenFileDialog openFileDialog1;
         private System.Windows.Forms.Button btEncryptFile;
         private System.Windows.Forms.Button btDecryptFile;
         private System.Windows.Forms.Button btEncryptFolder;
