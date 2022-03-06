@@ -1,5 +1,5 @@
-﻿using Encrypter.Properties;
-using System;
+﻿using System;
+using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace Encrypter
@@ -18,52 +18,27 @@ namespace Encrypter
         {
             string path = pathPicker.FolderDialog();
             if (path is null) return;
-            try
+
+            OperationStatusHandle(() =>
             {
                 var init = controller.EncryptFolder(path);
                 ShowKey(init);
-            }
-            catch 
-            {
-                MessageBox.Show("Что-то пошло не так :(", "Ошибка");
-            }
-        }
-
-        private void BtDecryptFolder_Click(object sender, EventArgs e)
-        {
-            if (!TryParseKey(out EncrypterInit init))
-            {
-                MessageBox.Show("Некорректный ключ.", "Ошибка");
-                return;
-            }
-            string path = pathPicker.FileDialog(controller.fileExt);
-            if (path is null) return;
-            try
-            {
-                controller.DecryptFolder(path, init);
-            }
-            catch
-            {
-                MessageBox.Show("Что-то пошло не так :(", "Ошибка");
-            }
+            });
         }
 
         private void BtEncryptFile_Click(object sender, EventArgs e)
         {
             string path = pathPicker.FileDialog();
             if (path is null) return;
-            try
+
+            OperationStatusHandle(() =>
             {
                 var init = controller.EncryptFile(path);
                 ShowKey(init);
-            }
-            catch
-            {
-                MessageBox.Show("Что-то пошло не так :(", "Ошибка");
-            }          
+            });
         }
 
-        private void BtDecryptFile_Click(object sender, EventArgs e)
+        private void BtDecrypt_Click(object sender, EventArgs e)
         {
             if (!TryParseKey(out EncrypterInit init))
             {
@@ -72,14 +47,23 @@ namespace Encrypter
             }
             string path = pathPicker.FileDialog(controller.fileExt);
             if (path is null) return;
+
+            OperationStatusHandle(() =>
+            {
+                controller.Decrypt(path, init);
+            });
+        }
+
+        private void OperationStatusHandle(Action action)
+        {
             try
             {
-                controller.DecryptFile(path, init);
-                
+                action.Invoke();
+                MessageBox.Show("Операция успешно выполнена", "Успех", MessageBoxButtons.OK);
             }
-            catch
+            catch (Exception e)
             {
-                MessageBox.Show("Что-то пошло не так :(", "Ошибка");
+                MessageBox.Show($"Что-то пошло не так :(\n{e.Message}", "Ошибка");
             }
         }
 

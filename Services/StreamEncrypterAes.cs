@@ -2,12 +2,17 @@
 using System.IO;
 using System.Security.Cryptography;
 
-namespace Encrypter
+namespace Encrypter.Services
 {
     public class StreamEncrypterAes : IStreamEncrypter
     {
         public EncrypterInit Encrypt(Stream input, Stream output)
         {
+            if (input is null || output is null)
+                throw new ArgumentNullException();
+            if (input.Equals(output))
+                throw new ArgumentException("Arguments input and output is the same object.");       
+
             using (var aes = new AesCryptoServiceProvider())
             {
                 aes.Padding = PaddingMode.Zeros;
@@ -23,10 +28,12 @@ namespace Encrypter
 
         public void Decrypt(Stream input, Stream output, EncrypterInit init)
         {
-            if (init.Key is null || init.IV is null)
+            if (init.Key is null || init.IV is null || input is null || output is null)
                 throw new ArgumentNullException();
+            if (input.Equals(output))
+                throw new ArgumentException("Arguments input and output is the same object.");
             if (init.Key.Length != 32 || init.IV.Length != 16)
-                throw new ArgumentException();
+                throw new ArgumentException("Init is not valid, key size != 256b");
 
             using (var aes = new AesCryptoServiceProvider())
             {
