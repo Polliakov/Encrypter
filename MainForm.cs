@@ -82,9 +82,14 @@ namespace Encrypter
 
         private void BtExpandOptions_Click(object sender, EventArgs e)
         {
+            ToggleOptionsExpand();
+        }
+
+        private void ToggleOptionsExpand()
+        {
             btExpandOptions.Text = isOptionsExpanded ? "v" : "ʌ";
             int shift = isOptionsExpanded ? -optionsHeightShift : optionsHeightShift;
-            
+
             pnlOptions.Height += shift;
             MinimumSize = new Size(Width, Height + shift);
             MaximumSize = MinimumSize;
