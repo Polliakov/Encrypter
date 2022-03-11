@@ -5,19 +5,19 @@ namespace Encrypter.Services
 {
     class Zipper
     {
-        public Zipper(string fileExt)
+        public Zipper(string fileExt, CompressionLevel compression)
         {
             this.fileExt = fileExt;
-            compressionLevel = CompressionLevel.NoCompression;
+            CompressionLevel = compression;
         }
 
-        public CompressionLevel compressionLevel { get; set; }
+        public CompressionLevel CompressionLevel { get; set; }
         private readonly string fileExt;
 
         public string ZipFolder(string path)
         {
             string zipPath = $"{path}.{fileExt}";
-            ZipFile.CreateFromDirectory(path, zipPath, compressionLevel, false);
+            ZipFile.CreateFromDirectory(path, zipPath, CompressionLevel, false);
             return zipPath;
         }
 
@@ -27,7 +27,7 @@ namespace Encrypter.Services
             using (FileStream output = new FileStream(zipPath, FileMode.Create))
             using (ZipArchive zip = new ZipArchive(output, ZipArchiveMode.Create))
             {
-                zip.CreateEntryFromFile(path, Path.GetFileName(path), compressionLevel);
+                zip.CreateEntryFromFile(path, Path.GetFileName(path), CompressionLevel);
             }
             return zipPath;
         }

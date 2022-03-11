@@ -38,6 +38,9 @@
     <StartupObject>Encrypter.Program</StartupObject>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="DESImplementation">
+      <HintPath>.\DESImplementation.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.WindowsAPICodePack, Version=1.1.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>packages\Microsoft.WindowsAPICodePack-Core.1.1.0.0\lib\Microsoft.WindowsAPICodePack.dll</HintPath>
     </Reference>
@@ -63,22 +66,27 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="EncrypterController.cs" />
-    <Compile Include="EncrypterInit.cs" />
+    <Compile Include="Controllers\EncrypterController.cs" />
+    <Compile Include="Services\EncrypterInit.cs" />
+    <Compile Include="EncryptionAlgorithmEnum.cs" />
+    <Compile Include="KeyException.cs" />
     <Compile Include="Services\FileEncrypter.cs" />
     <Compile Include="Services\IStreamEncrypter.cs" />
+    <Compile Include="Services\KeyService.cs" />
     <Compile Include="Services\StreamEncrypterAes.cs" />
-    <Compile Include="MainForm.cs">
+    <Compile Include="Services\StreamEncrypterDES.cs" />
+    <Compile Include="Services\SymmetricStreamEncrypter.cs" />
+    <Compile Include="UI\MainForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="MainForm.Designer.cs">
+    <Compile Include="UI\MainForm.Designer.cs">
       <DependentUpon>MainForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="PathPicker.cs" />
+    <Compile Include="UI\PathPicker.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\Zipper.cs" />
-    <EmbeddedResource Include="MainForm.resx">
+    <EmbeddedResource Include="UI\MainForm.resx">
       <DependentUpon>MainForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">

@@ -1,5 +1,5 @@
 ﻿
-namespace Encrypter
+namespace Encrypter.UI
 {
     partial class MainForm
     {
@@ -45,7 +45,7 @@ namespace Encrypter
             this.chbFreeKey = new System.Windows.Forms.CheckBox();
             this.label5 = new System.Windows.Forms.Label();
             this.label7 = new System.Windows.Forms.Label();
-            this.cbEncryptAlgorithm = new System.Windows.Forms.ComboBox();
+            this.cbEncryptionAlgorithm = new System.Windows.Forms.ComboBox();
             this.label6 = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
             this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
@@ -206,7 +206,7 @@ namespace Encrypter
             this.pnlOptions.Controls.Add(this.label4);
             this.pnlOptions.Controls.Add(this.label7);
             this.pnlOptions.Controls.Add(this.cbCompressionLevel);
-            this.pnlOptions.Controls.Add(this.cbEncryptAlgorithm);
+            this.pnlOptions.Controls.Add(this.cbEncryptionAlgorithm);
             this.pnlOptions.Controls.Add(this.label6);
             this.pnlOptions.Location = new System.Drawing.Point(8, 12);
             this.pnlOptions.Name = "pnlOptions";
@@ -257,17 +257,18 @@ namespace Encrypter
             // 
             // cbEncryptAlgorithm
             // 
-            this.cbEncryptAlgorithm.BackColor = System.Drawing.SystemColors.Window;
-            this.cbEncryptAlgorithm.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cbEncryptAlgorithm.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.cbEncryptAlgorithm.FormattingEnabled = true;
-            this.cbEncryptAlgorithm.Items.AddRange(new object[] {
-            "AES"});
-            this.cbEncryptAlgorithm.Location = new System.Drawing.Point(197, 37);
-            this.cbEncryptAlgorithm.Name = "cbEncryptAlgorithm";
-            this.cbEncryptAlgorithm.Size = new System.Drawing.Size(128, 26);
-            this.cbEncryptAlgorithm.TabIndex = 14;
-            this.cbEncryptAlgorithm.SelectedIndexChanged += new System.EventHandler(this.CbEncryptAlgorithm_SelectedIndexChanged);
+            this.cbEncryptionAlgorithm.BackColor = System.Drawing.SystemColors.Window;
+            this.cbEncryptionAlgorithm.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cbEncryptionAlgorithm.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.cbEncryptionAlgorithm.FormattingEnabled = true;
+            this.cbEncryptionAlgorithm.Items.AddRange(new object[] {
+            "AES",
+            "DES"});
+            this.cbEncryptionAlgorithm.Location = new System.Drawing.Point(197, 37);
+            this.cbEncryptionAlgorithm.Name = "cbEncryptAlgorithm";
+            this.cbEncryptionAlgorithm.Size = new System.Drawing.Size(128, 26);
+            this.cbEncryptionAlgorithm.TabIndex = 14;
+            this.cbEncryptionAlgorithm.SelectedIndexChanged += new System.EventHandler(this.CbEncryptionAlgorithm_SelectedIndexChanged);
             // 
             // label6
             // 
@@ -347,7 +348,7 @@ namespace Encrypter
         private System.Windows.Forms.ComboBox cbCompressionLevel;
         private System.Windows.Forms.Panel pnlOptions;
         private System.Windows.Forms.Label label5;
-        private System.Windows.Forms.ComboBox cbEncryptAlgorithm;
+        private System.Windows.Forms.ComboBox cbEncryptionAlgorithm;
         private System.Windows.Forms.Label label6;
         private System.Windows.Forms.Label label7;
         private System.Windows.Forms.CheckBox chbFreeKey;

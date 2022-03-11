@@ -9,13 +9,22 @@ namespace Encrypter.Services
             encrypter = streamEncrypter;
         }
 
-        public readonly IStreamEncrypter encrypter;
+        public IStreamEncrypter Encrypter
+        {
+            get => encrypter;
+            set
+            {
+                encrypter?.Dispose();
+                encrypter = value;
+            }
+        }
+        private IStreamEncrypter encrypter;
 
-        public EncrypterInit Encrypt(string path)
+        public void Encrypt(string path, EncrypterInit init)
         {
             using (var input = OpenFile(path, FileAccess.Read))
             using (var output = OpenFile(path, FileAccess.Write))
-                return encrypter.Encrypt(input, output);
+                encrypter.Encrypt(input, output, init);
         }
 
         public void Decrypt(string path, EncrypterInit init)

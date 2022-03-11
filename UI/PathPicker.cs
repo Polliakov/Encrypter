@@ -1,7 +1,7 @@
 ﻿using Microsoft.WindowsAPICodePack.Dialogs;
 using System.Windows.Forms;
 
-namespace Encrypter
+namespace Encrypter.UI
 {
     public class PathPicker
     {

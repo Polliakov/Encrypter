@@ -1,10 +1,11 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 
 namespace Encrypter.Services
 {
-    interface IStreamEncrypter
+    interface IStreamEncrypter : IDisposable
     {
-        EncrypterInit Encrypt(Stream input, Stream output);
+        void Encrypt(Stream input, Stream output, EncrypterInit init);
         void Decrypt(Stream input, Stream output, EncrypterInit init);
     }
 }

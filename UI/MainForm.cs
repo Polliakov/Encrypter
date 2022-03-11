@@ -1,24 +1,30 @@
-﻿using System;
-using System.Windows.Forms;
-using System.IO.Compression;
+﻿using Encrypter.Controllers;
+using Encrypter.Properties;
+using System;
 using System.Drawing;
+using System.IO.Compression;
+using System.Windows.Forms;
 
-namespace Encrypter
+namespace Encrypter.UI
 {
     public partial class MainForm : Form
     {
         public MainForm()
         {
             InitializeComponent();
+            optionsHeightShift = pnlOptions.Height - 32;
             cbCompressionLevel.SelectedIndex = 0;
-            cbEncryptAlgorithm.SelectedIndex = 0;
-            btDecrypt.Text += controller.fileExt;
+            cbEncryptionAlgorithm.SelectedIndex = 0;
+            btDecrypt.Text += fileExt;
+
+            controller.ShowKey += ShowKeyHandler;
         }
 
         private readonly PathPicker pathPicker = new PathPicker();
         private readonly EncrypterController controller = EncrypterController.Instance;
+        private readonly string fileExt = Resources.FileExt;
 
-        private const int optionsHeightShift = 72;      
+        private readonly int optionsHeightShift;
         private bool isOptionsExpanded = true;
 
 
@@ -29,8 +35,7 @@ namespace Encrypter
 
             OperationStatusHandle(() =>
             {
-                var init = controller.EncryptFolder(path);
-                ShowKey(init);
+                controller.EncryptFolder(path, tbKey.Text);
             });
         }
 
@@ -41,30 +46,31 @@ namespace Encrypter
 
             OperationStatusHandle(() =>
             {
-                var init = controller.EncryptFile(path);
-                ShowKey(init);
+                controller.EncryptFile(path, tbKey.Text);
             });
         }
 
         private void BtDecrypt_Click(object sender, EventArgs e)
         {
-            if (!TryParseKey(out EncrypterInit init))
-            {
-                MessageBox.Show("Некорректный ключ.", "Ошибка");
-                return;
-            }
-            string path = pathPicker.FileDialog(controller.fileExt);
+            string path = pathPicker.FileDialog(fileExt);
             if (path is null) return;
 
             OperationStatusHandle(() =>
             {
-                controller.Decrypt(path, init);
+                controller.Decrypt(path, tbKey.Text);
             });
         }
 
-        private void CbEncryptAlgorithm_SelectedIndexChanged(object sender, EventArgs e)
+        private void CbEncryptionAlgorithm_SelectedIndexChanged(object sender, EventArgs e)
         {
-
+            EncryptionAlgorithm algorithm;
+            switch (cbEncryptionAlgorithm.SelectedIndex)
+            {
+                case 0: algorithm = EncryptionAlgorithm.Aes; break;
+                case 1: algorithm = EncryptionAlgorithm.DES; break;
+                default: throw new ApplicationException("Incorrect encryption algorithm");
+            }
+            controller.SetEncryptionAlgorithm(algorithm);
         }
 
         private void CbCompressionLevel_SelectedIndexChanged(object sender, EventArgs e)
@@ -106,33 +112,10 @@ namespace Encrypter
             }
             catch (Exception e)
             {
-                MessageBox.Show($"Что-то пошло не так :(\n{e.Message}", "Ошибка");
+                MessageBox.Show(e.Message, "Ошибка");
             }
         }
 
-        private void ShowKey(EncrypterInit init)
-        {
-            tbKey.Text = Convert.ToBase64String(init.Key) +
-                ":" + Convert.ToBase64String(init.IV);
-        }
-
-        private bool TryParseKey(out EncrypterInit init)
-        {
-            try
-            {
-                var keyIv = tbKey.Text.Split(':');
-                var key = Convert.FromBase64String(keyIv[0]);
-                var iv = Convert.FromBase64String(keyIv[1]);
-                if (key.Length != 32 || iv.Length != 16)
-                    throw new Exception();
-                init = new EncrypterInit { Key = key, IV = iv };
-                return true;
-            }
-            catch
-            {
-                init = new EncrypterInit();
-                return false;
-            }         
-        }
+        private void ShowKeyHandler(string init) => tbKey.Text = init;
     }
 }
