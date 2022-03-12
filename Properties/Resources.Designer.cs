@@ -68,5 +68,15 @@ namespace Encrypter.Properties {
                 return ResourceManager.GetString("FileExt", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Поиск локализованного ресурса типа System.Drawing.Icon, аналогичного (Значок).
+        /// </summary>
+        internal static System.Drawing.Icon ZencIcon {
+            get {
+                object obj = ResourceManager.GetObject("ZencIcon", resourceCulture);
+                return ((System.Drawing.Icon)(obj));
+            }
+        }
     }
 }

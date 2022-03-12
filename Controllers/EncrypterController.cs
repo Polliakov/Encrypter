@@ -12,16 +12,20 @@ namespace Encrypter.Controllers
         {
             string fileExt = Resources.FileExt;
             this.fileExt = fileExt;
+
             zipper = new Zipper(fileExt, CompressionLevel.NoCompression);
             encrypter = new FileEncrypter(new StreamEncrypterAes());
+
             keyService = KeyService.Instance;
             keyService.Algorithm = EncryptionAlgorithm.Aes;
             keyService.ParseAnyKey = false;
+            UseUserKey = false;
         }
         public static EncrypterController Instance => instance; 
         private static readonly EncrypterController instance = new EncrypterController();
 
         public event Action<string> ShowKey;
+        public bool UseUserKey { get; set; }
 
         private readonly string fileExt;
         private readonly FileEncrypter encrypter;
@@ -30,8 +34,7 @@ namespace Encrypter.Controllers
 
         public void EncryptFolder(string path, string keyIV)
         {
-            var init = keyService.GenerateInit();
-            ShowKey?.Invoke(init.ToString());
+            var init = GetInit(keyIV);
 
             string zipPath = zipper.ZipFolder(path);
             encrypter.Encrypt(zipPath, init);
@@ -40,8 +43,7 @@ namespace Encrypter.Controllers
 
         public void EncryptFile(string path, string keyIV)
         {
-            var init = keyService.GenerateInit();
-            ShowKey?.Invoke(init.ToString());
+            var init = GetInit(keyIV);
 
             string zipPath = zipper.Zip(path);
             encrypter.Encrypt(zipPath, init);
@@ -75,6 +77,26 @@ namespace Encrypter.Controllers
             }
             this.encrypter.Encrypter = encrypter;
             keyService.Algorithm = algorithm;
+        }
+
+        public void SetParseAnyKey(bool parseAnyKey)
+        {
+            keyService.ParseAnyKey = parseAnyKey;
+        }
+
+        private EncrypterInit GetInit(string keyIV)
+        {
+            EncrypterInit init;
+            if (UseUserKey)
+            {
+                init = keyService.ParseInit(keyIV);
+            }
+            else
+            {
+                init = keyService.GenerateInit();
+                ShowKey(init.ToString());
+            }
+            return init;
         }
     }
 }

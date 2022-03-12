@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Security.Cryptography;
+using System.Text;
 
 namespace Encrypter.Services
 {
@@ -17,8 +18,8 @@ namespace Encrypter.Services
             {
                 switch (Algorithm)
                 {
-                    case EncryptionAlgorithm.Aes: return 256;
-                    case EncryptionAlgorithm.DES: return 64;
+                    case EncryptionAlgorithm.Aes: return 32;
+                    case EncryptionAlgorithm.DES: return 8;
                     default: throw new NotImplementedException(Algorithm.ToString() + " is not implemented");
                 }
             }
@@ -30,12 +31,13 @@ namespace Encrypter.Services
             {
                 switch (Algorithm)
                 {
-                    case EncryptionAlgorithm.Aes: return 128;
-                    case EncryptionAlgorithm.DES: return 64;
+                    case EncryptionAlgorithm.Aes: return 16;
+                    case EncryptionAlgorithm.DES: return 8;
                     default: throw new NotImplementedException(Algorithm.ToString() + " is not implemented");
                 }
             }
         }
+
         private static readonly RandomNumberGenerator random = RandomNumberGenerator.Create();
 
         public EncrypterInit ParseInit(string keyIV)
@@ -51,13 +53,13 @@ namespace Encrypter.Services
             if (!ParseAnyKey)
                 throw new KeyException("Некорректный ключ");
 
-            throw new NotImplementedException();
+            return GenerateInit(keyIV);
         }
 
         public EncrypterInit GenerateInit()
         {
-            var key = new byte[KeyLength / 8];
-            var iv = new byte[IVLength / 8];
+            var key = new byte[KeyLength];
+            var iv = new byte[IVLength];
             random.GetBytes(key);
             random.GetBytes(iv);
             return new EncrypterInit { Key = key, IV = iv };
@@ -70,7 +72,7 @@ namespace Encrypter.Services
                 var splited = keyIV.Split(':');
                 var key = Convert.FromBase64String(splited[0]);
                 var iv = Convert.FromBase64String(splited[1]);
-                if (key.Length != KeyLength / 8 || iv.Length != IVLength / 8)
+                if (key.Length != KeyLength || iv.Length != IVLength)
                     throw new Exception();
                 init = new EncrypterInit { Key = key, IV = iv };
                 return true;
@@ -80,6 +82,19 @@ namespace Encrypter.Services
                 init = new EncrypterInit();
                 return false;
             }
+        }
+
+        private EncrypterInit GenerateInit(string str)
+        {
+            var strBytes = Encoding.UTF8.GetBytes(str);
+            var expanded = new SHA512Managed().ComputeHash(strBytes);
+
+            var key = new byte[KeyLength];
+            var iv = new byte[IVLength];
+            Buffer.BlockCopy(expanded, 0, key, 0, key.Length);
+            Buffer.BlockCopy(expanded, key.Length, iv, 0, iv.Length);
+
+            return new EncrypterInit { Key = key, IV = iv };
         }
     }
 }

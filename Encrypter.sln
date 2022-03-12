@@ -7,7 +7,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Encrypter", "Encrypter.cspr
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Libraries", "Libraries", "{78E8FF8E-F41F-4F7A-945B-22D650053030}"
 	ProjectSection(SolutionItems) = preProject
-		DESImplementation.dll = DESImplementation.dll
+		DESCbc.dll = DESCbc.dll
 	EndProjectSection
 EndProject
 Global

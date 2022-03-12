@@ -29,6 +29,7 @@ namespace Encrypter.UI
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
             this.tbKey = new System.Windows.Forms.TextBox();
             this.btDecrypt = new System.Windows.Forms.Button();
             this.btEncryptFolder = new System.Windows.Forms.Button();
@@ -41,6 +42,8 @@ namespace Encrypter.UI
             this.label4 = new System.Windows.Forms.Label();
             this.cbCompressionLevel = new System.Windows.Forms.ComboBox();
             this.pnlOptions = new System.Windows.Forms.Panel();
+            this.chbUseUserKey = new System.Windows.Forms.CheckBox();
+            this.label8 = new System.Windows.Forms.Label();
             this.btExpandOptions = new System.Windows.Forms.Label();
             this.chbFreeKey = new System.Windows.Forms.CheckBox();
             this.label5 = new System.Windows.Forms.Label();
@@ -69,7 +72,7 @@ namespace Encrypter.UI
             // btDecrypt
             // 
             this.btDecrypt.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.btDecrypt.BackColor = System.Drawing.Color.Honeydew;
+            this.btDecrypt.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(218)))), ((int)(((byte)(231)))), ((int)(((byte)(207)))));
             this.btDecrypt.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btDecrypt.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.btDecrypt.Location = new System.Drawing.Point(5, 34);
@@ -200,6 +203,8 @@ namespace Encrypter.UI
             // pnlOptions
             // 
             this.pnlOptions.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.pnlOptions.Controls.Add(this.chbUseUserKey);
+            this.pnlOptions.Controls.Add(this.label8);
             this.pnlOptions.Controls.Add(this.btExpandOptions);
             this.pnlOptions.Controls.Add(this.chbFreeKey);
             this.pnlOptions.Controls.Add(this.label5);
@@ -212,6 +217,27 @@ namespace Encrypter.UI
             this.pnlOptions.Name = "pnlOptions";
             this.pnlOptions.Size = new System.Drawing.Size(563, 104);
             this.pnlOptions.TabIndex = 12;
+            // 
+            // chbUseUserKey
+            // 
+            this.chbUseUserKey.AutoSize = true;
+            this.chbUseUserKey.Location = new System.Drawing.Point(452, 77);
+            this.chbUseUserKey.Name = "chbUseUserKey";
+            this.chbUseUserKey.Size = new System.Drawing.Size(15, 14);
+            this.chbUseUserKey.TabIndex = 19;
+            this.chbUseUserKey.UseVisualStyleBackColor = true;
+            this.chbUseUserKey.CheckedChanged += new System.EventHandler(this.ChbUseUserKey_CheckedChanged);
+            // 
+            // label8
+            // 
+            this.label8.AutoSize = true;
+            this.label8.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.label8.Location = new System.Drawing.Point(218, 72);
+            this.label8.Name = "label8";
+            this.label8.Size = new System.Drawing.Size(228, 20);
+            this.label8.TabIndex = 18;
+            this.label8.Text = "Свой ключ для шифрования";
+            this.label8.TextAlign = System.Drawing.ContentAlignment.TopRight;
             // 
             // btExpandOptions
             // 
@@ -233,6 +259,7 @@ namespace Encrypter.UI
             this.chbFreeKey.Size = new System.Drawing.Size(15, 14);
             this.chbFreeKey.TabIndex = 16;
             this.chbFreeKey.UseVisualStyleBackColor = true;
+            this.chbFreeKey.CheckedChanged += new System.EventHandler(this.ChbFreeKey_CheckedChanged);
             // 
             // label5
             // 
@@ -255,7 +282,7 @@ namespace Encrypter.UI
             this.label7.Text = "Произвольный ключ";
             this.label7.TextAlign = System.Drawing.ContentAlignment.TopRight;
             // 
-            // cbEncryptAlgorithm
+            // cbEncryptionAlgorithm
             // 
             this.cbEncryptionAlgorithm.BackColor = System.Drawing.SystemColors.Window;
             this.cbEncryptionAlgorithm.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
@@ -265,7 +292,7 @@ namespace Encrypter.UI
             "AES",
             "DES"});
             this.cbEncryptionAlgorithm.Location = new System.Drawing.Point(197, 37);
-            this.cbEncryptionAlgorithm.Name = "cbEncryptAlgorithm";
+            this.cbEncryptionAlgorithm.Name = "cbEncryptionAlgorithm";
             this.cbEncryptionAlgorithm.Size = new System.Drawing.Size(128, 26);
             this.cbEncryptionAlgorithm.TabIndex = 14;
             this.cbEncryptionAlgorithm.SelectedIndexChanged += new System.EventHandler(this.CbEncryptionAlgorithm_SelectedIndexChanged);
@@ -318,6 +345,7 @@ namespace Encrypter.UI
             this.Controls.Add(this.tbKey);
             this.Controls.Add(this.tableLayoutPanel1);
             this.Controls.Add(this.pnlOptions);
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MaximumSize = new System.Drawing.Size(595, 312);
             this.MinimumSize = new System.Drawing.Size(595, 312);
             this.Name = "MainForm";
@@ -355,5 +383,7 @@ namespace Encrypter.UI
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel2;
         private System.Windows.Forms.Label btExpandOptions;
+        private System.Windows.Forms.CheckBox chbUseUserKey;
+        private System.Windows.Forms.Label label8;
     }
 }

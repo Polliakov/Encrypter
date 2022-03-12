@@ -4,6 +4,6 @@ namespace Encrypter.Services
 {
     public class StreamEncrypterAes : SymmetricStreamEncrypter
     {
-        public StreamEncrypterAes() : base(new AesCryptoServiceProvider()) { }
+        public StreamEncrypterAes() : base(Aes.Create()) { }
     }
 }

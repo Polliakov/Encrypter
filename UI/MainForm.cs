@@ -117,5 +117,15 @@ namespace Encrypter.UI
         }
 
         private void ShowKeyHandler(string init) => tbKey.Text = init;
+
+        private void ChbUseUserKey_CheckedChanged(object sender, EventArgs e)
+        {
+            controller.UseUserKey = chbUseUserKey.Checked;
+        }
+
+        private void ChbFreeKey_CheckedChanged(object sender, EventArgs e)
+        {
+            controller.SetParseAnyKey(chbFreeKey.Checked);
+        }
     }
 }
