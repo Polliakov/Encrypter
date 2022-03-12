@@ -40,7 +40,6 @@ namespace Encrypter.Services
         {
             using (var outputEncrypted = new CryptoStream(output, transform, CryptoStreamMode.Write))
             {
-                blockSize /= 8;
                 var buffer = new byte[blockSize];
                 int bytesRead = 0;
                 do
