@@ -53,11 +53,15 @@ namespace Encrypter.Controllers
         public void Decrypt(string path, string keyIV)
         {
             if (Path.GetExtension(path) != '.' + fileExt)
-                throw new ArgumentException(nameof(path));
+                throw new FormatException(nameof(path));
 
             var init = keyService.ParseInit(keyIV);
-            encrypter.Decrypt(path, init);
-            zipper.Unzip(path);
+            string tmpFile = encrypter.Decrypt(path, init);
+
+            try     { zipper.Unzip(tmpFile); }
+            catch   { throw new Exception("Не удалось расшифровать"); }
+            finally { File.Delete(tmpFile); }
+
             File.Delete(path);
         }
 

@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 using System.IO.Compression;
 
 namespace Encrypter.Services
@@ -34,32 +35,17 @@ namespace Encrypter.Services
 
         public string Unzip(string path)
         {
+            if (Path.GetExtension(path) != $".{fileExt}tmp")
+                throw new FormatException("Invalid extension");
+
             string unzipPath = DeleteExt(path);
             ZipFile.ExtractToDirectory(path, unzipPath);
             return unzipPath;
         }
 
-        // TODO: GetNotExistsPath() like f.txt => f 1.txt.
-        private string GetNotExistsFilePath(string path)
-        {
-            if (!File.Exists(path)) return path;
-
-            int copyNumber = 1;
-            string fileNameOrig = Path.GetFileName(path);
-            do
-            {
-                string fileName = Path.GetFileName(path);
-                int fileNameI = path.LastIndexOf(fileName);
-                path = path.Remove(fileNameI, fileName.Length);
-                path = path.Insert(fileNameI, $"{fileNameOrig} {copyNumber}");
-            }
-            while(File.Exists(path));
-            return path;
-        }
-
         private string DeleteExt(string path)
         {
-            return path.Remove(path.Length - (fileExt.Length + 1));
+            return path.Remove(path.Length - (fileExt.Length + 4)); // 4 for "." and "tmp"
         }
     }
 }

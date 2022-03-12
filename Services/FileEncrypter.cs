@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 
 namespace Encrypter.Services
 {
@@ -22,29 +23,37 @@ namespace Encrypter.Services
 
         public void Encrypt(string path, EncrypterInit init)
         {
-            using (var input = OpenFile(path, FileAccess.Read))
-            using (var output = OpenFile(path, FileAccess.Write))
+            int bufferSize = BufferSize(path);
+
+            using (var input = new FileStream(path, FileMode.Open, FileAccess.Read, FileShare.ReadWrite, bufferSize))
+            using (var output = new FileStream(path, FileMode.Open, FileAccess.Write, FileShare.ReadWrite, bufferSize))
                 encrypter.Encrypt(input, output, init);
         }
 
-        public void Decrypt(string path, EncrypterInit init)
+        public string Decrypt(string path, EncrypterInit init)
         {
-            using (var input = OpenFile(path, FileAccess.Read))
-            using (var output = OpenFile(path, FileAccess.Write))
-                encrypter.Decrypt(input, output, init);
+            string pathTmp = path + "tmp";
+            int bufferSize = BufferSize(path);
+
+            try
+            {
+                using (var input = new FileStream(path, FileMode.Open, FileAccess.Read, FileShare.Read, bufferSize))
+                using (var output = new FileStream(pathTmp, FileMode.Create, FileAccess.Write, FileShare.Read, bufferSize))
+                    encrypter.Decrypt(input, output, init);
+            }
+            catch
+            {
+                File.Delete(pathTmp);
+                throw new Exception("Внутренняя ошибка дешифровки");
+            }
+
+            return pathTmp;
         }
 
-        private FileStream OpenFile(string path, FileAccess access)
-        {
-            long fileSize = new FileInfo(path).Length;
-            int bufferSize = fileSize > 1 << 22 ? 1 << 16 : 1 << 12;
-            return new FileStream(
-                path,
-                FileMode.Open,
-                access,
-                FileShare.ReadWrite,
-                bufferSize,
-                false);
-        }
+    private int BufferSize(string path)
+    {
+        long fileSize = new FileInfo(path).Length;
+        return fileSize > 1 << 22 ? 1 << 16 : 1 << 12;
     }
+}
 }
