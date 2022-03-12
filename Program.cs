@@ -10,11 +10,14 @@ namespace Encrypter
         /// Главная точка входа для приложения.
         /// </summary>
         [STAThread]
-        static void Main()
+        static void Main(string[] args)
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new MainForm());
+            if (args.Length == 0)
+                Application.Run(new MainForm());
+            else
+                Application.Run(new DecryptForm(args[0]));
         }
     }
 }
